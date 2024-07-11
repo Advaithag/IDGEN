@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-container {
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="submit"],
+        .form-container input[type="reset"],
+        .form-container textarea,
+        .form-container input[type="file"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .form-container textarea {
+            height: 60px;
+            resize: vertical;
+        }
+
+        .form-container input[type="submit"],
+        .form-container input[type="reset"] {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container input[type="reset"] {
+            background-color: #6c757d;
+        }
+
+        .form-container input[type="submit"]:hover,
+        .form-container input[type="reset"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container input[type="reset"]:hover {
+            background-color: #5a6268;
+        }
+
+        .id-card {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            margin-top: 20px; /* Add margin to separate from form */
+        }
+
+        .card-side {
+            width: 45%;
+            height: 350px; /* Increased height for better alignment */
+            background-color: #ffffff;
+            border: 2px solid #007BFF;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Ensure content spaced correctly */
+            align-items: center;
+            position: relative; /* Added position relative for absolute positioning */
+        }
+
+        .card-side .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+            position: relative;
+        }
+
+        .card-side .logo {
+            width: 80px; /* Increased size */
+            height: 80px; /* Increased size */
+            border-radius: 10%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 120px; /* Adjusted top position */
+        }
+
+        .card-side .college-name {
+            width: 100%;
+            text-align: center;
+            color: #007BFF;
+            font-weight: bold;
+            font-size: 18px; /* Reduced font size */
+            margin-top: 10px; /* Adjusted margin */
+        }
+
+        .card-side .college-pin {
+            width: 100%;
+            text-align: center;
+            color: #007BFF;
+            font-weight: bold;
+            font-size: 12px; /* Reduced font size */
+            margin-bottom: 10px; /* Adjusted margin */
+        }
+
+        .card-side .student-photo {
+            width: 120px; /* Increased size */
+            height: 120px; /* Increased size */
+            border-radius: 10%;
+            border: 2px solid #007BFF;
+            margin-bottom: 10px; /* Add margin to separate from other elements */
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .card-side .content {
+            width: 100%;
+            text-align: left;
+        }
+
+        .card-side h2 {
+            font-size: 18px; /* Reduced font size */
+            color: #007BFF;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .card-side p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .form-container .note {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+
+        .student-details {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            text-align: right;
+        }
+
+        .terms {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <form id="idForm">
+                <label for="studentName">Student Name:</label>
+                <input type="text" id="studentName" name="studentName" required><br><br>
+                
+                <label for="usn">USN:</label>
+                <input type="text" id="usn" name="usn" required><br><br>
+                
+                <label for="dob">Date of Birth:</label>
+                <input type="text" id="dob" name="dob" required><br><br>
+                
+                <label for="fatherName">Father's Name:</label>
+                <input type="text" id="fatherName" name="fatherName" required><br><br>
+                
+                <label for="validUpto">Valid Upto:</label>
+                <input type="text" id="validUpto" name="validUpto" required><br><br>
+                
+                <label for="bloodGroup">Blood Group:</label>
+                <input type="text" id="bloodGroup" name="bloodGroup" required><br><br>
+
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required><br><br>
+                
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" required></textarea><br><br>
+                
+                <label for="studentPhoto">Upload Student Photo (Max 2MB):</label>
+                <input type="file" id="studentPhoto" name="studentPhoto" accept="image/*" required><br>
+                <p class="note">Note: Photo should be less than 2MB.</p>
+                
+                <input type="submit" value="Generate ID Card">
+                <input type="reset" value="Reset">
+            </form>
+        </div>
+
+        <div class="id-card" id="idCard">
+            <div class="card-side" id="cardFront">
+                <div class="header">
+                    <p class="college-name">Government Engineering College Ramanagara-571401</p>
+            
+                    <img src="logo.jpeg" alt="College Logo" class="logo">
+                </div>
+                <div class="content">
+                    <img src="" alt="Student Photo" class="student-photo" id="displayStudentPhoto">
+                    <div class="student-details">
+                        <p><strong>Name:</strong> <span id="displayStudentName"></span></p>
+                        <p><strong>USN:</strong> <span id="displayUsn"></span></p>
+                        <p><strong>Date of Birth:</strong> <span id="displayDob"></span></p>
+                        <p><strong>Father's Name:</strong> <span id="displayFatherName"></span></p>
+                        <p><strong>Valid Upto:</strong> <span id="displayValidUpto"></span></p>
+                        <p><strong>Blood Group:</strong> <span id="displayBloodGroup"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-side" id="cardBack">
+                <div class="content">
+                    <p><strong> Contact Information:</strong></p>
+                    <p><strong>Phone Number:</strong> <span id="displayPhoneNumber"></span></p>
+                    <p><strong>Email:</strong> abcdtechbd@gmail.com</p>
+                    <p><strong>Address:</strong> <span id="displayAddress"></span></p>
+                    <div class="terms">
+                        <p><strong>Terms & Conditions:</strong></p>
+                        <p>1. Duplicate card will be issued on payment of Rs.100/-.</p>
+                        <p>2. Take care of this card, as you are responsible for using this card.</p>
+                        <p>3. This card has to be returned at the time of leaving Institution.</p>
+                        <p><b> Principal signature</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('idForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collect form data
+            var studentName = document.getElementById('studentName').value;
+            var usn = document.getElementById('usn').value;
+            var dob = document.getElementById('dob').value;
+            var fatherName = document.getElementById('fatherName').value;
+            var validUpto = document.getElementById('validUpto').value;
+            var bloodGroup = document.getElementById('bloodGroup').value;
+            var phoneNumber = document.getElementById('phoneNumber').value;
+            var address = document.getElementById('address').value;
+
+            // Validate the photo size
+            var studentPhotoFile = document.getElementById('studentPhoto').files[0];
+            if (studentPhotoFile.size > 2 * 1024 * 1024) { // 2MB in bytes
+                alert("Photo size should be less than 2MB.");
+                return;
+            }
+
+            // Update ID card with form values
+            document.getElementById('displayStudentName').textContent = studentName;
+            document.getElementById('displayUsn').textContent = usn;
+            document.getElementById('displayDob').textContent = dob;
+            document.getElementById('displayFatherName').textContent = fatherName;
+            document.getElementById('displayValidUpto').textContent = validUpto;
+            document.getElementById('displayBloodGroup').textContent = bloodGroup;
+            document.getElementById('displayPhoneNumber').textContent = phoneNumber;
+            document.getElementById('displayAddress').textContent = address;
+
+            // Read and display the student photo
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('displayStudentPhoto').src = e.target.result;
+            };
+            reader.readAsDataURL(studentPhotoFile);
+
+            // Show the ID card
+            document.getElementById('idCard').style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
